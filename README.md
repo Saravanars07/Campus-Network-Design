@@ -13,10 +13,13 @@ The network is divided into multiple departments such as HR, DEV, TEST, and ACC 
 - Use /25 subnetting for efficient IP utilization.
 
 ## Topology Summary
+ ![Topology](/Screenshot/Topology.png)
+ 
 - 1 Router
 - Multiple Switches
 - Multiple PCs
 - VLAN-based segmentation
+
 
 ## Technologies Used
 - VLAN
