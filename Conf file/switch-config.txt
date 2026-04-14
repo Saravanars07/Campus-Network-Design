@@ -1,0 +1,77 @@
+For VTP Server
+
+
+enable
+configure terminal
+hostname Switch1
+no ip domain-lookup
+
+vtp domain CAMPUS
+vtp mode server
+vtp password cisco123
+
+vlan 10
+name HR
+vlan 20
+name DEV
+vlan 30
+name TEST
+vlan 40
+name ACC
+
+interface fa0/1
+switchport mode access
+switchport access vlan 10
+
+interface fa0/2
+switchport mode access
+switchport access vlan 10
+
+interface fa0/3
+switchport mode access
+switchport access vlan 20
+
+interface fa0/4
+switchport mode access
+switchport access vlan 20
+
+interface g0/1
+switchport mode trunk
+
+end
+write memory
+
+
+For VTP Clinet
+
+
+enable
+configure terminal
+hostname Switch2
+no ip domain-lookup
+
+vtp domain CAMPUS
+vtp mode client
+vtp password cisco123
+
+interface fa0/1
+switchport mode access
+switchport access vlan 30
+
+interface fa0/2
+switchport mode access
+switchport access vlan 30
+
+interface fa0/3
+switchport mode access
+switchport access vlan 40
+
+interface fa0/4
+switchport mode access
+switchport access vlan 40
+
+interface g0/1
+switchport mode trunk
+
+end
+write memory

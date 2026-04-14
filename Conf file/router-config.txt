@@ -1,0 +1,101 @@
+enable
+configure terminal
+hostname Router0
+no ip domain-lookup
+
+! Interface to switch trunk
+interface g0/0
+no shutdown
+
+! Subinterface for VLAN 10 - HR
+interface g0/0.10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.128
+
+! Subinterface for VLAN 20 - DEV
+interface g0/0.20
+encapsulation dot1Q 20
+ip address 192.168.10.129 255.255.255.128
+
+! Subinterface for VLAN 30 - TEST
+interface g0/0.30
+encapsulation dot1Q 30
+ip address 192.168.11.1 255.255.255.128
+
+! Subinterface for VLAN 40 - ACC
+interface g0/0.40
+encapsulation dot1Q 40
+ip address 192.168.11.129 255.255.255.128
+
+! DHCP exclusions
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.10.129 192.168.10.140
+ip dhcp excluded-address 192.168.11.1 192.168.11.10
+ip dhcp excluded-address 192.168.11.129 192.168.11.140
+
+! DHCP pool for HR
+ip dhcp pool HR
+network 192.168.10.0 255.255.255.128
+default-router 192.168.10.1
+dns-server 8.8.8.8
+
+! DHCP pool for DEV
+ip dhcp pool DEV
+network 192.168.10.128 255.255.255.128
+default-router 192.168.10.129
+dns-server 8.8.8.8
+
+! DHCP pool for TEST
+ip dhcp pool TEST
+network 192.168.11.0 255.255.255.128
+default-router 192.168.11.1
+dns-server 8.8.8.8
+
+! DHCP pool for ACC
+ip dhcp pool ACC
+network 192.168.11.128 255.255.255.128
+default-router 192.168.11.129
+dns-server 8.8.8.8
+
+! Acl in Group Hr
+ip access-list extended Hr
+permit ip 192.168.10.0 0.0.0.127 192.168.10.129 0.0.0.127
+permit ip 192.168.10.0 0.0.0.127 192.168.11.0 0.0.0.127
+permit ip 192.168.10.0 0.0.0.127 192.168.11.129 0.0.0.127
+
+
+! Acl in Group Dev
+ip access-list extended Dev
+permit ip 192.168.10.0 0.0.0.127 192.168.10.129 0.0.0.127
+permit ip 192.168.10.0 0.0.0.127 192.168.11.0 0.0.0.127
+
+
+! Acl in Group Test
+ip access-list extended test
+permit ip 192.168.11.0 0.0.0.127 192.168.10.129 0.0.0.127
+permit ip 192.168.11.0 0.0.0.127 192.168.11.0 0.0.0.127
+
+
+! Acl in Group Acc
+ip access-list extended Acc
+permit ip 192.168.11.129 0.0.0.127 192.168.10.129 0.0.0.127
+permit ip 192.168.11.129 0.0.0.127 192.168.11.0 0.0.0.127
+
+
+
+
+interface g0/0.10
+ip access-group Hr in
+
+interface g0/0.20
+ip access-group Dev in
+
+interface g0/0.30
+ip access-group Test in
+
+interface g0/0.40
+ip access-group Acc in
+
+
+end
+write memory
