@@ -47,6 +47,22 @@ The network is divided into multiple departments such as HR, DEV, TEST, and ACC 
 - Central VLAN management using VTP
 - Inter-VLAN communication using router subinterfaces
 
+ ## Verification Commands
+ - router
+   ```
+   show ip interface brief
+   show ip route
+   show running-config
+    show ip dhcp binding
+    show access-lists
+    ```
+  - Switch
+    ```
+    show vlan brief
+    show interfaces trunk
+    show vtp status
+    show running-config
+    ```
 ## Testing
 - Ping between PCs in same VLAN
 - Ping between different VLANs
